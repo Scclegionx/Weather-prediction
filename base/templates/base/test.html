@@ -2,28 +2,47 @@
 
 {% block content %}
 
-<h1>HOME PAGE</h1>
-<hr />
 <h1>Weather Data</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temperature</th>
-                <th>Humidity</th>
-                <th>Precipitation</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in csv_data %}
-                <tr>
-                    <td>{{ row.0 }}</td>  
-                    <td>{{ row.1 }}</td>  
-                    <td>{{ row.2 }}</td>  
-                    <td>{{ row.3 }}</td>  
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    {{ weather_html | safe }}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <hr />
+
+    {{ backtest_html | safe }}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_objbt.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_objbt.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_objbt.number }} of {{ page_objbt.paginator.num_pages }}.
+            </span>
+
+            {% if page_objbt.has_next %}
+                <a href="?page={{ page_objbt.next_page_number }}">next</a>
+                <a href="?page={{ page_objbt.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 
 {% endblock %}
