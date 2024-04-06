@@ -9,6 +9,7 @@ from django.http import HttpResponse
 import csv
 from django.core.paginator import Paginator
 
+
 def home(request):
     context = {}
     return render(request, 'base/home.html', context)
@@ -75,16 +76,18 @@ def test(request):
         
         # Paginate the weather data
         paginator = Paginator(weather, 10)  
-        page_number = request.GET.get('page')
+        page_number = request.GET.get('weather_page')
         page_obj = paginator.get_page(page_number)
 
         # Paginate the backtest_result data
+        page_number2 = request.GET.get('backtest_page')
         paginatorbt = Paginator(backtest_result, 10)  
-        page_objbt = paginatorbt.get_page(page_number)
+        page_objbt = paginatorbt.get_page(page_number2)
 
-        context = {'weather_html': page_obj.object_list.to_html(), 'page_obj': page_obj,
-                   'backtest_html': page_objbt.object_list.to_html(), 'page_objbt' : page_objbt
-                   }
+        context = {
+            'weather_html': page_obj.object_list.to_html(), 'page_obj': page_obj,
+            'backtest_html': page_objbt.object_list.to_html(), 'page_objbt' : page_objbt
+        }
         return render(request, 'base/test.html', context)
     else:
         return HttpResponse("Please upload a CSV file.")
