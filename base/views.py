@@ -71,11 +71,13 @@ def test(request):
         rf = RandomForestRegressor()
         print(weather.dtypes)
 
-        backtest_result = backtestrf(weather, rf, predictors)
-
-    # Lặp qua 4 lần để tính và thêm dữ liệu cho 4 ngày mới nhất
+        # Lặp qua 4 lần để tính và thêm dữ liệu cho 4 ngày mới nhất
         for _ in range(4):
             weather = calculate_and_append_3_day_average(weather)
+
+        backtest_result = backtestrf(weather, rf, predictors)
+
+    
         
         # Paginate the weather data
         paginator = Paginator(weather, 10)  
