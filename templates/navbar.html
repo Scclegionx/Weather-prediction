@@ -1,3 +1,367 @@
-<h1><a href="/">LOGO</a></h1>
-<h1><a href="/test">Test</a></h1>
-<hr>
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PAGE TITLE</title>
+        <link rel="stylesheet" href="/static/styles/main.css">
+    </head>
+    <body>
+        
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Channel</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: url("https://media.istockphoto.com/id/509922273/fr/photo/fond-de-ciel-sans-nuages-8-k.jpg?s=612x612&w=0&k=20&c=4erlL7QuR5tneYzWTufwWBICIXZBV4fT1_NiE_vwBzU=");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            background-color: purple; /* Màu nền cho thanh task */
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%; /* Độ rộng ngang toàn màn hình */
+        }
+        header .logo-title {
+            display: flex;
+            align-items: center;
+        }
+        header img.logo {
+            width: 60px; /* Kích thước logo đã được thu nhỏ */
+            height: auto;
+            margin-right: 10px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: white; /* Màu chữ cho tiêu đề */
+            text-align: center; /* Căn giữa tiêu đề */
+        }
+        header form {
+            margin-top: 10px;
+            text-align: center;
+        }
+        header form input[type="text"] {
+            padding: 8px;
+        }
+        header form button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        .task-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            width: 100%; /* Độ rộng của thanh task */
+            max-width: 600px; /* Độ rộng tối đa */
+            margin-bottom: 20px;
+        }
+        .task-bar .hero-content {
+            text-align: center;
+        }
+        .task-bar .hero-content h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .task-bar .hero-content p {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        main {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Căn giữa trên màn hình */
+            width: 100%; /* Độ rộng ngang toàn màn hình */
+        }
+        .tab-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            width: 100%; /* Đảm bảo thanh tab căn giữa trên màn hình */
+        }
+        .tab-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .tab-button.active {
+            background-color: #0056b3;
+        }
+        .tab-content {
+            display: none;
+            text-align: center; /* Căn giữa nội dung tab */
+            width: 100%; /* Đảm bảo nội dung tab căn giữa trên màn hình */
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Căn giữa nội dung tab theo chiều dọc */
+        }
+        .current-weather {
+            text-align: center;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .forecast {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column; /* Chỉnh thành dạng cột */
+            justify-content: center; /* Căn giữa toàn bộ nội dung */
+            align-items: center; /* Căn giữa toàn bộ nội dung */
+        }
+        .forecast ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column; /* Dạng cột cho các mục */
+            align-items: center; /* Căn giữa các mục theo chiều ngang */
+        }
+        .forecast li {
+            margin: 10px; /* Khoảng cách giữa các mục */
+            width: 100%; /* Độ rộng của mỗi mục */
+            max-width: 300px; /* Kích thước tối đa của mỗi mục */
+            text-align: center; /* Căn giữa nội dung trong mỗi mục */
+        }
+        .forecast h3 {
+            margin: 0;
+        }
+        /* Chỉnh kích thước ảnh trong tất cả các tab */
+        .forecast img {
+            max-width: 100%; /* Kích thước tối đa của ảnh */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-title">
+                <img
+                src="https://banner2.cleanpng.com/20180602/frh/kisspng-computer-icons-encapsulated-postscript-weather-5b12bb2564e037.2222420415279542134132.jpg"
+                alt="Logo"
+                class="logo"
+                />
+                <h1>The Weather Channel</h1>
+            </div>
+            <form id="search-form">
+                <input
+                type="text"
+                id="search-input"
+                placeholder="Tìm thành phố hoặc mã zip"
+                />
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </header>
+        <section class="task-bar">
+            <div class="hero-content">
+                <h1>Hà Nội</h1>
+                <p>Thứ Tư, 3 tháng 4 năm 2024</p>
+                <h2>35°</h2>
+                <p>Nhiều mây</p>
+                <p>Ngày 38°. Đêm 34°</p>
+            </div>
+            <img src="https://i.pinimg.com/564x/eb/af/e9/ebafe9a775db6da6903ac18527bde414.jpg" class="task-icon" alt="Icon" />
+
+        </section>
+        <main>
+            <div class="tab-bar">
+                <button class="tab-button active" onclick="openTab('today')">
+                    Hôm nay
+                </button>
+                <button class="tab-button" onclick="openTab('3days')">3 ngày sau</button>
+                <button class="tab-button" onclick="openTab('monthly')">
+                    1 tháng
+                </button>
+            </div>
+            <section id="today" class="tab-content active">
+                <h2>Hôm nay</h2>
+                <div class="current-weather">
+                    <div class="location">
+                        <h2>Hanoi</h2>
+                        <p>Thứ Tư, 3 tháng 4 năm 2024</p>
+                    </div>
+                    <div class="current-conditions">
+                        <div class="temperature">
+                            <span class="value">39</span>
+                            <span class="unit">°C</span>
+    
+                        </div>
+                        <div class="weather-description">
+                            <span class="value"></span>
+                            <br>
+                            <img
+                            src="https://i.pinimg.com/564x/e3/56/18/e35618d661f4a07af37f27578d40a6e0.jpg"
+                            alt="Khá"
+                            />
+                        </div>
+                    </div>
+                    <div class="air-quality">
+                        <p>Độ ẩm :</p>
+                        <p>Chất lượng không khí:</p>
+                        <p>AQI: 78</p>
+                        <p>Chi tiết: <a href="#">Xem chi tiết</a></p>
+                    </div>
+                </div>
+            </section>
+            <!-- Tab 3 ngày -->
+            <section id="3days" class="tab-content">
+                <h2>3 ngày</h2>
+                <div class="forecast">
+                    <ul class="daily-forecast">
+                        <li>
+                            <h3>Thứ Năm</h3>
+                            <div class="current-weather">
+                                <div class="location">
+                                    <h2>Hanoi</h2>
+                                    <p>Thứ Năm, 4 tháng 4 năm 2024</p>
+                                </div>
+                                <div class="current-conditions">
+                                    <div class="temperature">
+                                        <span class="value">38</span>
+                                        <span class="unit">°C</span>
+                                    </div>
+                                    <div class="weather-description">
+                                        <span class="value"></span>
+                                        <br>
+                                        <img
+                                        src="https://i.pinimg.com/564x/7e/f6/3c/7ef63c2612927524ac7bcd53a1892a15.jpg"
+                                        alt="Mưa rào"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="air-quality">
+                                    <p>Độ ẩm :</p>
+                                    <p>Chất lượng không khí:</p>
+                                    <p>AQI:</p>
+                                    <p>Chi tiết: <a href="#">Xem chi tiết</a></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Thứ Sáu</h3>
+                            <div class="current-weather">
+                                <div class="location">
+                                    <h2>Hanoi</h2>
+                                    <p>Thứ Sáu, 5 tháng 4 năm 2024</p>
+                                </div>
+                                <div class="current-conditions">
+                                    <div class="temperature">
+                                        <span class="value">38</span>
+                                        <span class="unit">°C</span>
+                                    </div>
+                                    <div class="weather-description">
+                                        <span class="value"></span>
+                                        <br>
+                                        <img
+                                        src="https://i.pinimg.com/564x/67/ee/46/67ee4681cd9547d02a08fdb94dfc0d08.jpg"
+                                        alt="Mưa rào"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="air-quality">
+                                    <p>Độ ẩm :</p>
+                                    <p>Chất lượng không khí:</p>
+                                    <p>AQI:</p>
+                                    <p>Chi tiết: <a href="#">Xem chi tiết</a></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Thứ Bảy</h3>
+                            <div class="current-weather">
+                                <div class="location">
+                                    <h2>Hanoi</h2>
+                                    <p>Thứ Bảy, 6 tháng 4 năm 2024</p>
+                                </div>
+                                <div class="current-conditions">
+                                    <div class="temperature">
+                                        <span class="value">38</span>
+                                        <span class="unit">°C</span>
+                                    </div>
+                                    <div class="weather-description">
+                                        <span class="value"></span>
+                                        <br>
+                                        <img
+                                        src="https://i.pinimg.com/564x/64/06/20/6406200bc868c5ebdb3e08b8b1a2595b.jpg"
+                                        alt="Mưa rào"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="air-quality">
+                                    <p>Độ ẩm :</p>
+                                    <p>Chất lượng không khí:</p>
+                                    <p>AQI:</p>
+                                    <p>Chi tiết: <a href="#">Xem chi tiết</a></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section id="monthly" class="tab-content">
+                <h2>Hàng tháng</h2>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
