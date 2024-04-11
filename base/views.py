@@ -73,6 +73,9 @@ def test(request):
 
         backtest_result = backtestrf(weather, rf, predictors)
 
+    # Lặp qua 4 lần để tính và thêm dữ liệu cho 4 ngày mới nhất
+        for _ in range(4):
+            weather = calculate_and_append_3_day_average(weather)
         
         # Paginate the weather data
         paginator = Paginator(weather, 10)  
@@ -102,6 +105,15 @@ def compute_rolling(weather, horizon, col):
 def expand_mean(df):
   return df.expanding(1).mean()
 
+
+def calculate_and_append_3_day_average(data):
+    # Lấy dữ liệu của 3 ngày trước đó
+    previous_days_data = data.iloc[-3:]
+    # Tính trung bình số liệu của từng cột trên cùng một hàng của ngày tiếp theo
+    average_data = previous_days_data.mean(axis=0)
+    # Thêm dữ liệu trung bình vào bảng dữ liệu weather
+    data.loc[data.index[-1] + pd.DateOffset(days=1)] = average_data
+    return data
 
 def backtestrf(weather, model, predictors, start=365, step=90):
   all_predictions = []
