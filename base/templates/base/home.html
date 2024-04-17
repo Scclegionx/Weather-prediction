@@ -1,47 +1,62 @@
 {% extends 'main.html' %}
-
 {% block content %}
 
-<div class="main-body">
-    <div class="location">
-      <div class="location-tag">
-        <h1>Hà Nội</h1>
-        <h2>Việt Nam</h2>
-      </div>
-      <div class="icon-location">
-        <span>
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            width="25"
-            height="25"
-            viewBox="0 0 48 48"
-            fill="var(--mimosa)"
-          ></svg>
-        </span>
-      </div>
-      <time class="time-location"> 10/04, 18:00 </time>
+<main class="content"> 
+  <div class="container">
+    <div class="header">
+      <h1>Hà Nội</h1>
+      <p>Thứ Bảy, 14 tháng 4 năm 2024</p>
     </div>
-    <div class="temperature-now">
-      <span>27</span>
-      <span>°</span>
-      <span>C</span>
+
+    <div class="current-weather">
+      <div class="temperature">27°C</div>
+      <div class="description">Có mây</div>
     </div>
-    <div class="content1">
-      <img src="..\static\imgs\mostly_cloudy.png" />
-      <p>Nhiều mây</p>
-      <div>
-        <span class="day-night">Ngày 28°C</span>
-        <span class="day-night">Đêm 20°C</span>
+    <h2>Thời tiết những ngày tiếp theo</h2>
+    <div class="forecast">
+      <div class="forecast-day">
+        <div class="date">CN</div>
+        <div class="info">
+          <div class="high">31°C</div>
+          <div class="low">25°C</div>
+          <div class="description">Có mây</div>
+        </div>
+      </div>
+      <div class="forecast-day">
+        <div class="date">T2</div>
+        <div class="info">
+          <div class="high">33°C</div>
+          <div class="low">26°C</div>
+          <div class="description">Nắng nóng</div>
+        </div>
+      </div>
+      <div class="forecast-day">
+        <div class="date">T3</div>
+        <div class="info">
+          <div class="high">32°C</div>
+          <div class="low">24°C</div>
+          <div class="description">Có mây</div>
+        </div>
+      </div>
+      <div class="forecast-day">
+        <div class="date">T4</div>
+        <div class="info">
+          <div class="high">32°C</div>
+          <div class="low">25°C</div>
+          <div class="description">Mây rải rác</div>
+        </div>
+      </div>
+      <div class="forecast-day">
+        <div class="date">T5</div>
+        <div class="info">
+          <div class="high">33°C</div>
+          <div class="low">25°C</div>
+          <div class="description">Nắng nhiều mây</div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="content2">
-    <div class="tab-bar">
-      <button class="tab-button" onclick="openTab('3days')">3 ngày sau</button>
-      <button class="tab-button" onclick="openTab('monthly')">1 tháng</button>
-    </div>
-  </div>
-  
+</body>
+</main>
 
 {% endblock %}

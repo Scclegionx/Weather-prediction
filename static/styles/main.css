@@ -1,103 +1,162 @@
-.header-nav{
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border: none;
-  width: 100%;
-  margin: auto;
-}
-body{
-    background-image: url('https://edgecast-img.yahoo.net/mysterio/api/4f0247304ad5d3d3d703f5a328fd1a127b1fae4f3bba681ae18d4b0e09d760c2/ymweather/resizefill_w1280_h720;quality_80;format_webp/https://s3.us-east-2.amazonaws.com/weather-flickr-images/farm8/7388/9427127201_ef1826e9af_h');
-    color: white;
-    font: 13px / 1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
-    height: 100%;
-    text-rendering: optimizeLegibility;
-    width: 100%;
-    font-size: 20px;
-    margin: auto;
-  }
-  input{
-    width: auto;
-    height: 28px;
-  }
-  h1 {
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    unicode-bidi: isolate;
-  }
-  h2{
-      margin: 0;
-      font-size: 1.12em;
-      margin-block-start: 0.83em;
-      margin-block-end: 0.83em;
-      margin-inline-start: 0px;
-      margin-inline-end: 0px;
-      font-weight: bold;
-      unicode-bidi: isolate;
-      transition-duration: .3s;
-  }
-  .header-nav{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    transition: margin .2s ease-out, opacity .15s linear .2s;
-    opacity: 1;
-  }
-  .logo{
-    width: 150px;
-    height: 100px;
-  }
-  .search-box{
-    display: flex;
-    width: auto;
-  }
-  .btn_one{
-    display: flex;
-    border: 1px solid #188fff;
-    border: 1px solid var(--yb-smurfette);
-    border-radius: 4px;
-    font-style: normal;
-    font-size: 14px;
-    animation: none;
-    align-items: center;
-    padding: 20px 200px 20px 200px;
-  }
-  button{
-    padding: 8px 16px;
-    border: none;
-    cursor: pointer;
-    appearance: auto;
-    width: auto;
-  }
-  .main-body{
-    display: flex;
-    margin: auto;
-    width: 100%;
-  }
- time{
-  font-style: italic;
-  display: inline;
-  margin-top: 5px;
- }
- .location{
-  padding: 20px 250px 50px 20px;
- }
- .temperature-now{
-  display: flex;
-  text-align: center;
-  align-items: center;
-  margin-right: 30px;
-  font-size: 150px;
- }
-.day-night{
-  display: block;
+body {
+  background-image: url("https://bizweb.dktcdn.net/100/438/408/files/anh-may-dep-yodyvn-1.jpg?v=1683598386315");
+  background-size: cover;
+  /* Cover the entire background */
+  background-position: center;
+  /* Center the background */
+  background-attachment: fixed;
+  /* Fixed background position */
+  color: #000;
+  /* Change text color to black */
+  font-family: sans-serif;
 }
 
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 20px;
+}
+
+.current-weather {
+  text-align: center;
+  /* Center the content */
+  margin-bottom: 20px;
+}
+
+.current-weather .temperature {
+  font-size: 64px;
+}
+
+.current-weather .description {
+  font-size: 24px;
+}
+
+.forecast {
+  display: flex;
+  justify-content: center;
+}
+
+.forecast {
+  display: flex;
+  justify-content: center;
+}
+
+.forecast-day {
+  text-align: center;
+  margin: 0 10px;
+  /* Adjust margin for spacing between days */
+}
+
+.forecast-day .date {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.forecast-day .info {
+  border: 1px solid #ccc;
+  /* Add border for better separation */
+  padding: 10px;
+  /* Add padding for better spacing */
+}
+
+.forecast-day .info div {
+  margin-bottom: 5px;
+  /* Adjust margin for spacing between weather info */
+}
+
+.forecast-day .temperature {
+  font-size: 18px;
+}
+
+.forecast-day .description {
+  font-size: 16px;
+}
+
+/* Navbar styles */
+.header-navbar {
+  display: flex;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
   
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  width: 150px;
+  height: 90px;
+}
+
+.search-box {
+  flex-grow: 1;
+  margin: 0 20px;
+  display: flex;
+  max-width: 500px;
+}
+.search-box input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+}
+.search-box button {
+  padding: 8px 15px;
+  border: none;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.navigation ul {
+  list-style-type: none;
+  display: flex;
+}
+
+.navigation ul li {
+  margin-right: 20px;
+}
+
+.navigation ul li:last-child {
+  margin-right: 0;
+}
+
+.navigation ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navigation ul li a:hover {
+  text-decoration: underline;
+}
+/* Footer styles */
+.footer {
+  position: fixed;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+}
