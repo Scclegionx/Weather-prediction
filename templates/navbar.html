@@ -1,16 +1,18 @@
-<div class="header-nav">
-  <div class="search-box">
+{% load static %}
+<header class="header-nav" style="display: flex; align-items: center; background-color: transparent;">
+  <div class="logo">
     <a href="">
-      <img
-        src="https://thoitiet.app/assets/images/logo_n_w.svg"
-        alt="Logo"
-        class="logo"
-      />
+      <img src="https://thoitiet.app/assets/images/logo_n_w.svg" alt="Logo" class="logo" />
     </a>
   </div>
-  <div class="btn_one">
+  <div class="search-box" style="margin-left: 20px;">
     <input type="text" id="search-input" placeholder="Tìm kiếm vị trí..." />
     <button type="submit">Tìm kiếm</button>
   </div>
-</div>
-
+  <div class="navigation" style="margin: 0 40px 0 20px;">
+    <ul class="nav-links">
+      <li><a href="#about-us">About us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
