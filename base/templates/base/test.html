@@ -1,10 +1,8 @@
 {% extends 'main.html' %}
 
 {% block content %}
-
-<h1>Weather Data</h1>
-
-    {{ weather_html | safe }}
+    <h1>Weather Data</h1>
+    {% comment %} {{ weather_html | safe }}
 
     <div class="pagination">
         <span class="step-links">
@@ -21,8 +19,34 @@
             {% endif %}
         </span>
     </div>
-    <hr />
-    
+    <hr /> {% endcomment %}
+
+    <style>
+        .weather-forecast {
+            display: flex; 
+            justify-content: space-between; 
+        }
+
+        .forecast-day {
+            flex: 1; 
+            border: 3px solid #ddd; 
+            margin: 5px; 
+            padding: 10px; 
+            text-align: center; 
+        }
+    </style>
+
+    <div class="weather-forecast">
+        {% for day in forecast_days %}
+        <div class="forecast-day">
+            <h4 style="font-size: 24px;">{{ day.datetime|date:"Y-m-d" }}</h4>
+                <div>Max Temp: {{ day.tempmax|floatformat:1 }}°C</div>
+                <div>Min Temp: {{ day.tempmin|floatformat:1 }}°C</div>
+                <div>Avg Temp: {{ day.temp|floatformat:1 }}°C</div>
+            </div>
+        {% endfor %}
+    </div>
+
     {{ backtest_html | safe }}
     <div class="pagination">
         <span class="step-links">
@@ -39,5 +63,4 @@
             {% endif %}
         </span>
     </div>
-
 {% endblock %}
