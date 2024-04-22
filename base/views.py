@@ -3,12 +3,18 @@ from io import StringIO
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import RobustScaler
 from .models import WeatherData
 from django.http import HttpResponse
 import csv
 from django.core.paginator import Paginator
-
+import tensorflow as tf
+from tensorflow import keras
+from keras.layers import Dense, LSTM
+from keras.models import Sequential
+from sklearn.model_selection import train_test_split
 
 def home(request):
     context = {}
@@ -71,28 +77,34 @@ def test(request):
         rf = RandomForestRegressor()
         print(weather.dtypes)
 
-        # Lặp qua 4 lần để tính và thêm dữ liệu cho 4 ngày mới nhất
+       
         for _ in range(4):
             weather = calculate_and_append_3_day_average(weather)
-
+            
+        weather.reset_index(inplace=True)
+        future_three_days = weather.iloc[-3:]
+        future_three_days_data = weather.iloc[-3:].to_dict(orient='records')
+        
         backtest_result = backtestrf(weather, rf, predictors)
 
-    
-        
-        # Paginate the weather data
-        paginator = Paginator(weather, 10)  
-        page_number = request.GET.get('weather_page')
-        page_obj = paginator.get_page(page_number)
+    # Paginate the weather data 
+        paginator = Paginator(weather, 10)   
+        page_number = request.GET.get('weather_page') 
+        page_obj = paginator.get_page(page_number) 
 
-        # Paginate the backtest_result data
-        page_number2 = request.GET.get('backtest_page')
-        paginatorbt = Paginator(backtest_result, 10)  
+        # Paginate the backtest_result data 
+        page_number2 = request.GET.get('backtest_page') 
+        paginatorbt = Paginator(backtest_result, 10)   
         page_objbt = paginatorbt.get_page(page_number2)
 
-        context = {
-            'weather_html': page_obj.object_list.to_html(), 'page_obj': page_obj,
-            'backtest_html': page_objbt.object_list.to_html(), 'page_objbt' : page_objbt
-        }
+        context = { 
+        'weather_html': page_obj.object_list.to_html(), 'page_obj': page_obj, 
+        'backtest_html': page_objbt.object_list.to_html(), 'page_objbt': page_objbt,
+        'future_three_days': future_three_days.to_html(), 
+        'forecast_days': future_three_days_data,
+}
+
+
         return render(request, 'base/test.html', context)
     else:
         return HttpResponse("Please upload a CSV file.")
@@ -135,3 +147,4 @@ def backtestrf(weather, model, predictors, start=365, step=90):
 
     all_predictions.append(combined)
   return pd.concat(all_predictions)
+
