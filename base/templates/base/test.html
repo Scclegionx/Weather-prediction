@@ -1,29 +1,35 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<style> 
+    .weather-forecast { 
+        display: flex;  
+        justify-content: space-between;  
+    } 
 
-<h1>Weather Data</h1>
+    .forecast-day { 
+        flex: 1;  
+        border: 3px solid #ddd;  
+        margin: 5px;  
+        padding: 10px;  
+        text-align: center;  
+    } 
+</style> 
 
-    {{ weather_html | safe }}
-
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?weather_page=1">&laquo; first</a>
-                <a href="?weather_page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-            {% if page_obj.has_next %}
-                <a href="?weather_page={{ page_obj.next_page_number }}">next</a>
-                <a href="?weather_page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
+<div class="weather-forecast">
+    {% for forecast in zipped_forecast_data %}
+    <div class="forecast-day">
+        <h4 style="font-size: 24px;">{{ forecast.datetime|date:"Y-m-d" }}</h4>
+        <div>Temp: {{ forecast.temp|floatformat:1 }}°C</div>
+        <div>Temp Max: {{ forecast.tempmax|floatformat:1 }}°C</div>
+        <div>Temp Min: {{ forecast.tempmin|floatformat:1 }}°C</div>
     </div>
-    <hr />
-    
-    {{ backtest_html | safe }}
+    {% endfor %}
+</div>
+
+
+
+{{ backtest_html | safe }}
     <div class="pagination">
         <span class="step-links">
             {% if page_objbt.has_previous %}
