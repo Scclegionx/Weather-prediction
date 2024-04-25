@@ -1,53 +1,35 @@
 {% extends 'main.html' %}
 
 {% block content %}
-    <h1>Weather Data</h1>
-    {% comment %} {{ weather_html | safe }}
+<style> 
+    .weather-forecast { 
+        display: flex;  
+        justify-content: space-between;  
+    } 
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?weather_page=1">&laquo; first</a>
-                <a href="?weather_page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-            {% if page_obj.has_next %}
-                <a href="?weather_page={{ page_obj.next_page_number }}">next</a>
-                <a href="?weather_page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
+    .forecast-day { 
+        flex: 1;  
+        border: 3px solid #ddd;  
+        margin: 5px;  
+        padding: 10px;  
+        text-align: center;  
+    } 
+</style> 
+
+<div class="weather-forecast">
+    {% for forecast in zipped_forecast_data %}
+    <div class="forecast-day">
+        <h4 style="font-size: 24px;">{{ forecast.datetime|date:"Y-m-d" }}</h4>
+        <div>Temp: {{ forecast.temp|floatformat:1 }}°C</div>
+        <div>Temp Max: {{ forecast.tempmax|floatformat:1 }}°C</div>
+        <div>Temp Min: {{ forecast.tempmin|floatformat:1 }}°C</div>
     </div>
-    <hr /> {% endcomment %}
+    {% endfor %}
+</div>
 
-    <style>
-        .weather-forecast {
-            display: flex; 
-            justify-content: space-between; 
-        }
 
-        .forecast-day {
-            flex: 1; 
-            border: 3px solid #ddd; 
-            margin: 5px; 
-            padding: 10px; 
-            text-align: center; 
-        }
-    </style>
 
-    <div class="weather-forecast">
-        {% for day in forecast_days %}
-        <div class="forecast-day">
-            <h4 style="font-size: 24px;">{{ day.datetime|date:"Y-m-d" }}</h4>
-                <div>Max Temp: {{ day.tempmax|floatformat:1 }}°C</div>
-                <div>Min Temp: {{ day.tempmin|floatformat:1 }}°C</div>
-                <div>Avg Temp: {{ day.temp|floatformat:1 }}°C</div>
-            </div>
-        {% endfor %}
-    </div>
-
-    {{ backtest_html | safe }}
+{{ backtest_html | safe }}
     <div class="pagination">
         <span class="step-links">
             {% if page_objbt.has_previous %}
@@ -63,4 +45,5 @@
             {% endif %}
         </span>
     </div>
+
 {% endblock %}
