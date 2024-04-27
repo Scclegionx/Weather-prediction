@@ -37,7 +37,7 @@
     </style> 
     
     <div class="weather-forecast">
-        {% for forecast in zipped_forecast_data %}
+        {% for forecast in dict %}
         <div class="forecast-day">
             <h4 style="font-size: 24px;">{{ forecast.datetime|date:"Y-m-d" }}</h4>
             <div>Temp: {{ forecast.temp|floatformat:1 }}°C</div>
@@ -48,23 +48,6 @@
     </div>
     
     
-    
-    {{ backtest_html | safe }}
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_objbt.has_previous %}
-                    <a href="?backtest_page=1">&laquo; first</a>
-                    <a href="?backtest_page={{ page_objbt.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="current">
-                    Page {{ page_objbt.number }} of {{ page_objbt.paginator.num_pages }}.
-                </span>
-                {% if page_objbt.has_next %}
-                    <a href="?backtest_page={{ page_objbt.next_page_number }}">next</a>
-                    <a href="?backtest_page={{ page_objbt.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
     
     {% endblock %}
     

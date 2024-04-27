@@ -14,12 +14,28 @@ from keras.src.models import Sequential
 import pandas as pd
 import numpy as np
 
+from django.views.decorators.cache import cache_page
+import datetime
+
+from django.core.cache import cache
+
+CACHE_TIMEOUT = 24 * 60 * 60
+
 
 def home(request):
     context = {}
     return render(request, 'base/home.html', context)
 
 def test(request):
+    dictForContext = weatherPredict()
+
+    print(dictForContext)
+    context = {'dict': dictForContext}
+
+    return render(request, 'base/test.html', context)
+
+
+def weatherPredict():
     weather_data = WeatherData.objects.all()
     if weather_data.exists():
         csv_data = []
@@ -80,6 +96,7 @@ def test(request):
         for _ in range(4):
             weather = calculate_and_append_3_day_average(weather)
         
+        #tempmxa
         # Random Forest
         backtest_result = backtestrf(weather, rf, predictors)
 
@@ -290,19 +307,41 @@ def test(request):
         print(ensemble_df2)
         #print(ensemble_df2["diff"].round().value_counts())
 
-        # Paginate the backtest_result data 
-        page_number2 = request.GET.get('backtest_page') 
-        paginatorbt = Paginator(ensemble_df, 10)   
-        page_objbt = paginatorbt.get_page(page_number2)
+        last_4_days_tempmax = ensemble_df.tail(4)
+        last_4_days_tempmin = ensemble_df2.tail(4)
 
-        context = {'backtest_html': page_objbt.object_list.to_html(), 'page_objbt': page_objbt,
-        }
+        forecast_days_data = [
+            {
+                'datetime': last_4_days_tempmax.index[-4],
+                'tempmax': last_4_days_tempmax['ensemble_prediction'][-4],
+                'tempmin': last_4_days_tempmin['ensemble_prediction'][-4]
+            },
+            {
+                'datetime': last_4_days_tempmax.index[-3],
+                'tempmax': last_4_days_tempmax['ensemble_prediction'][-3],
+                'tempmin': last_4_days_tempmin['ensemble_prediction'][-3]
+            },
+            {
+                'datetime': last_4_days_tempmax.index[-2],
+                'tempmax': last_4_days_tempmax['ensemble_prediction'][-2],
+                'tempmin': last_4_days_tempmin['ensemble_prediction'][-2]
+            },
+            {
+                'datetime': last_4_days_tempmax.index[-1],
+                'tempmax': last_4_days_tempmax['ensemble_prediction'][-1],
+                'tempmin': last_4_days_tempmin['ensemble_prediction'][-1]
+            }
+        ]
 
-        context = {
-            'backtest_html': page_objbt.object_list.to_html(), 'page_objbt': page_objbt,
-}
+        zipped_forecast_data = [
+            {
+                'datetime': forecast_days_data[i]['datetime'],
+                'tempmax': forecast_days_data[i]['tempmax'],
+                'tempmin': forecast_days_data[i]['tempmin']
+            } for i in range (4)
+        ]
 
-        return render(request, 'base/test.html', context)
+        return zipped_forecast_data
     else:
         return HttpResponse("Please upload a CSV file.")
         
@@ -350,26 +389,6 @@ def backtestrf(weather, model, predictors, start=365, step=90):
         all_predictions.append(combined)
     return pd.concat(all_predictions)
 
-def backtestrf2(weather, model, predictors2, start=365, step=90):
-    # Khoi tao danh sach du doan 2
-    all_predictions2 = []
-    for i in range(start, weather.shape[0], step):
-        train = weather.iloc[:i,:]
-        test = weather.iloc[i:(i+step),:]
-        
-        model.fit(train[predictors2], train["target-tempmin"])
-        
-        preds2 = model.predict(test[predictors2])
-        preds2 = pd.Series(preds2, index=test.index)
-        combined2 = pd.concat([test["target-tempmin"], preds2], axis=1)
-        combined2.columns = ['actual', 'prediction2']
-        combined2['actual'] = pd.to_numeric(combined2['actual'], errors='coerce')
-        combined2['prediction2'] = pd.to_numeric(combined2['prediction2'], errors='coerce')
-        combined2["diff"] = (combined2["prediction2"] - combined2["actual"]).abs()
-        
-        all_predictions2.append(combined2)
-    return pd.concat(all_predictions2)
-
 
 def backtestrf2(weather, model, predictors, start=365, step=90):
   all_predictions = []
@@ -380,9 +399,6 @@ def backtestrf2(weather, model, predictors, start=365, step=90):
     model.fit(train[predictors], train["target-tempmin"])
 
     preds = model.predict(test[predictors])
-
-    r_squared = r2_score(test["target-tempmin"], preds)
-    print("R-squared score:", r_squared)
 
     preds = pd.Series(preds, index=test.index)
     combined = pd.concat([test["target-tempmin"], preds], axis = 1)
