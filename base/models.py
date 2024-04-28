@@ -11,3 +11,11 @@ class WeatherData(models.Model):
 
     def __str__(self):
         return f'Weather Data - Uploaded at: {self.uploaded}'
+
+class Prediction(models.Model):
+    datetime = models.DateTimeField()
+    tempmax = models.FloatField()
+    tempmin = models.FloatField()
+
+    def __str__(self):
+        return f"Prediction for {self.datetime}: Tempmax - {self.tempmax}, Tempmin - {self.tempmin}"
