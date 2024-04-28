@@ -14,10 +14,9 @@ from keras.src.models import Sequential
 import pandas as pd
 import numpy as np
 
-from django.views.decorators.cache import cache_page
-import datetime
+from .models import Prediction
+from datetime import datetime, timedelta
 
-from django.core.cache import cache
 
 CACHE_TIMEOUT = 24 * 60 * 60
 
@@ -27,11 +26,40 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 def test(request):
-    dictForContext = weatherPredict()
-
-    print(dictForContext)
-    context = {'dict': dictForContext}
-
+    # Set today's date to "2024-02-27"
+    today = datetime(2024, 3, 2)
+    
+    # Calculate the end_date as "2024-03-01"
+    end_date = datetime(2024, 3, 5) + timedelta(days=1)
+    # Get today's date
+    #today = datetime.now().date()
+    
+    # Calculate the date range for the next 4 days
+    #end_date = today + timedelta(days=4)
+    
+    # Check if predictions for the next 4 days exist in the database
+    predictions_exist = Prediction.objects.filter(datetime__gte=today, datetime__lt=end_date).exists()
+    print(today)
+    print(end_date)
+    print(predictions_exist)
+    if not predictions_exist:
+        # If predictions don't exist, generate new predictions
+        forecast_days_data = weatherPredict()  # This function should generate the forecast data
+        
+        # Add new predictions to the database
+        for data in forecast_days_data:
+            prediction = Prediction.objects.create(
+                datetime=data['datetime'],
+                tempmax=data['tempmax'],
+                tempmin=data['tempmin']
+            )
+        
+        predictions = forecast_days_data
+    else:
+        # If predictions exist, retrieve them from the database
+        predictions = Prediction.objects.filter(datetime__gte=today, datetime__lt=end_date).values()
+    
+    context = {'dict': predictions}
     return render(request, 'base/test.html', context)
 
 
