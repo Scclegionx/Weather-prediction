@@ -1,59 +1,39 @@
 {% extends 'main.html' %}
+
+{% load custom_filters %}
+
 {% block content %}
 
 <main class="content"> 
   <div class="container">
     <div class="header">
-      <h1>Hà Nội</h1>
-      <p>Thứ Bảy, 14 tháng 4 năm 2024</p>
+      <h1>{{ dict.0.place }}</h1>
+      <h1>{{ dict.0.location }}</h1>
+      <h4 class="date" style="font-size: 24px;">{{ dict.0.datetime|date:"l"|translate_day }}, {{ dict.0.datetime|date:"d" }} tháng {{ dict.0.datetime|date:"m" }} năm {{ dict.0.datetime|date:"Y" }} </h4>
+      
     </div>
 
     <div class="current-weather">
-      <div class="temperature">27°C</div>
+      <div class="temperature">{{ dict.0.tempmax|floatformat:0 }}°C</div>
+      <div class="temperature">{{ dict.0.tempmin|floatformat:0 }}°C</div>
       <div class="description">Có mây</div>
     </div>
     <h2>Thời tiết những ngày tiếp theo</h2>
     <div class="forecast">
-      <div class="forecast-day">
-        <div class="date">CN</div>
-        <div class="info">
-          <div class="high">31°C</div>
-          <div class="low">25°C</div>
-          <div class="description">Có mây</div>
-        </div>
-      </div>
-      <div class="forecast-day">
-        <div class="date">T2</div>
-        <div class="info">
-          <div class="high">33°C</div>
-          <div class="low">26°C</div>
-          <div class="description">Nắng nóng</div>
-        </div>
-      </div>
-      <div class="forecast-day">
-        <div class="date">T3</div>
-        <div class="info">
-          <div class="high">32°C</div>
-          <div class="low">24°C</div>
-          <div class="description">Có mây</div>
-        </div>
-      </div>
-      <div class="forecast-day">
-        <div class="date">T4</div>
-        <div class="info">
-          <div class="high">32°C</div>
-          <div class="low">25°C</div>
-          <div class="description">Mây rải rác</div>
-        </div>
-      </div>
-      <div class="forecast-day">
-        <div class="date">T5</div>
-        <div class="info">
-          <div class="high">33°C</div>
-          <div class="low">25°C</div>
-          <div class="description">Nắng nhiều mây</div>
-        </div>
-      </div>
+      
+      {% for forecast in dict %}
+        {% if forloop.counter > 1 %}
+          <div class="forecast-day">
+              <h4 class="date" style="font-size: 24px;">{{ forecast.datetime|date:"l"|translate_day }} {{ forecast.datetime|date:"d-m-Y" }}</h4>
+
+              <div class="info">
+                <div class="high">Temp Max: {{ forecast.tempmax|floatformat:1 }}°C</div>
+                <div class="low">Temp Min: {{ forecast.tempmin|floatformat:1 }}°C</div>
+                <div class="low">Humidity: {{ forecast.humidity|floatformat:0 }}%</div>
+              </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
 </body>
