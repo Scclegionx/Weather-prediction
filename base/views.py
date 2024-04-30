@@ -129,7 +129,6 @@ def weatherPredict():
         backtest_result = backtestrf(weather, rf, predictors)
 
         #RNN Simple
-
         X_rnn = weather[predictors].values.reshape(-1, 1, len(predictors))
 
         rnn = Sequential()
@@ -141,34 +140,18 @@ def weatherPredict():
         y_rnn = weather["target"].values
         rnn.fit(X_rnn, y_rnn, epochs=10, batch_size=32, verbose=0)
         preds_rnn = rnn.predict(X_rnn)
-
-        # Assuming weather contains the DataFrame with weather data and preds_rnn contains the predictions
-
-        # Get the datetime index from the original weather DataFrame
         datetime_index = weather.index
 
-        # Calculate the difference between actual and predicted values
         diff = abs(weather['target'] - preds_rnn.flatten())
-
         # Create a DataFrame for predictions
         predictions_df = pd.DataFrame({'index': datetime_index, 'actual': weather['target'], 'predictions': preds_rnn.flatten(), 'diff': diff})
-
-        # Optionally, set the index to the datetime index
         predictions_df.set_index('index', inplace=True)
-
-        # Display the predictions DataFrame
         #print(predictions_df)
 
         # LSTM
 
         # Reshape input data for LSTM
         X_lstm = weather[predictors].values.reshape(-1, 1, len(predictors))
-
-        # # Normalize the data
-        # X_lstm = (X_lstm - X_lstm.mean()) / X_lstm.std()
-
-        # # Split the data into training and testing sets
-        # X_train, X_test, y_train, y_test = train_test_split(X_lstm, weather["target"].values, test_size=0.2, random_state=42)
 
         lstm = Sequential()
         lstm.add(LSTM(64, input_shape=(X_lstm.shape[1], X_lstm.shape[2]), activation='relu'))

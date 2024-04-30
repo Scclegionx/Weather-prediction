@@ -1,13 +1,9 @@
 body {
   background-image: url("https://bizweb.dktcdn.net/100/438/408/files/anh-may-dep-yodyvn-1.jpg?v=1683598386315");
-  background-size: cover;
-  /* Cover the entire background */
-  background-position: center;
-  /* Center the background */
-  background-attachment: fixed;
-  /* Fixed background position */
-  color: #000;
-  /* Change text color to black */
+  background-size: cover; /* Cover the entire background */
+  background-position: center; /* Center the background */
+  background-attachment: fixed; /* Fixed background position */
+  color: #000; /* Change text color to black */
   font-family: sans-serif;
 }
 
@@ -36,8 +32,7 @@ body {
 }
 
 .current-weather {
-  text-align: center;
-  /* Center the content */
+  text-align: center; /* Center the content */
   margin-bottom: 20px;
 }
 
@@ -61,8 +56,7 @@ body {
 
 .forecast-day {
   text-align: center;
-  margin: 0 10px;
-  /* Adjust margin for spacing between days */
+  margin: 0 10px; /* Adjust margin for spacing between days */
 }
 
 .forecast-day .date {
@@ -71,15 +65,12 @@ body {
 }
 
 .forecast-day .info {
-  border: 1px solid #ccc;
-  /* Add border for better separation */
-  padding: 10px;
-  /* Add padding for better spacing */
+  border: 1px solid #16047e; /* Add border for better separation */
+  padding: 10px; /* Add padding for better spacing */
 }
 
 .forecast-day .info div {
-  margin-bottom: 5px;
-  /* Adjust margin for spacing between weather info */
+  margin-bottom: 5px; /* Adjust margin for spacing between weather info */
 }
 
 .forecast-day .temperature {
@@ -89,78 +80,19 @@ body {
 .forecast-day .description {
   font-size: 16px;
 }
-
-/* Navbar styles */
-
-.header-nav {
-  display: flex;
-  background-color: #333;
-  color: #fff;
-  padding: 10px 0;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo img {
-  width: 150px;
-  height: 90px;
-}
-
-.search-box {
-  flex-grow: 1;
-  margin-left: 20px;
-  display: flex;
-  max-width: 500px;
-}
-
-.search-box input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-}
-
-.search-box button {
-  padding: 8px 15px;
-  border: none;
-  background-color: #fff;
-  color: #333;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.navigation ul {
-  list-style-type: none;
-  display: flex;
-}
-
-.navigation ul li {
-  margin-right: 20px;
-}
-
-.navigation ul li:last-child {
-  margin-right: 0;
-}
-
-.navigation ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.navigation ul li a:hover {
-  text-decoration: underline;
-}
-
-/* Footer styles */
-.footer {
-  position: fixed;
-  background-color: #333;
-  color: #fff;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.footer p {
-  margin: 0;
+/* CSS for detail tab */
+/* CSS for detail tab */
+/* CSS for detail tab */
+/* CSS for detail tab */
+/* CSS for detail tab */
+.detail-tab {
+  background-color: rgba(32, 5, 156, 0.1); /* Màu nền xanh nhẹ */
+  border: 1px solid #29055c; /* Đường viền */
+  padding: 10px; /* Khoảng cách nội dung */
+  position: absolute; /* Đặt vị trí tuyệt đối */
+  top: calc(100% + 10px); /* Hiển thị ở dưới và cách top 10px */
+  left: 50%; /* Chính giữa ngang */
+  transform: translateX(-50%); /* Canh giữa ngang */
+  display: none; /* Ẩn ban đầu */
+  width: 200px; /* Độ rộng */
 }
