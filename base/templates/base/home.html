@@ -6,30 +6,33 @@
 
 <main class="content"> 
   <div class="container">
-    <div class="header">
-      <h1>{{ dict.0.place }}</h1>
-      <h1>{{ dict.0.location }}</h1>
-      <h4 class="date" style="font-size: 24px;">{{ dict.0.datetime|date:"l"|translate_day }}, {{ dict.0.datetime|date:"d" }} tháng {{ dict.0.datetime|date:"m" }} năm {{ dict.0.datetime|date:"Y" }} </h4>
-      
-    </div>
+    {% for forecast in dict %}
+      {% if forecast.datetime.date == today %}
+        <div class="header">
+          <h1>{{ forecast.place }}</h1>
+          <h1>{{ forecast.location }}</h1>
+          <h4 class="date" style="font-size: 24px;">{{ forecast.datetime|date:"l"|translate_day }}, {{ forecast.datetime|date:"d" }} tháng {{ forecast.datetime|date:"m" }} năm {{ forecast.datetime|date:"Y" }} </h4>
+          
+        </div>
 
-    <div class="current-weather">
-      <div class="temperature">{{ dict.0.tempmax|floatformat:0 }}°C</div>
-      <div class="temperature">{{ dict.0.tempmin|floatformat:0 }}°C</div>
-      <div class="description">Có mây</div>
-    </div>
+        <div class="current-weather">
+          <div class="temperature">Nhiệt độ cao nhất: {{ forecast.tempmax|floatformat:0 }}°C</div>
+          <div class="temperature">Nhiệt độ thấp nhất: {{ forecast.tempmin|floatformat:0 }}°C</div>
+          <div class="description">Độ ẩm: {{ forecast.humidity|floatformat:0 }}%</div>
+        </div>
+      {% endif %}
+    {% endfor %}
     <h2>Thời tiết những ngày tiếp theo</h2>
     <div class="forecast">
-      
       {% for forecast in dict %}
-        {% if forloop.counter > 1 %}
+        {% if forecast.datetime.date > today %}
           <div class="forecast-day">
               <h4 class="date" style="font-size: 24px;">{{ forecast.datetime|date:"l"|translate_day }} {{ forecast.datetime|date:"d-m-Y" }}</h4>
 
               <div class="info">
                 <div class="high">Temp Max: {{ forecast.tempmax|floatformat:1 }}°C</div>
                 <div class="low">Temp Min: {{ forecast.tempmin|floatformat:1 }}°C</div>
-                <div class="low">Humidity: {{ forecast.humidity|floatformat:0 }}%</div>
+                <div class="humidity">Humidity: {{ forecast.humidity|floatformat:0 }}%</div>
               </div>
           </div>
         {% endif %}
