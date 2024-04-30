@@ -1,4 +1,5 @@
 import os
+from sklearn.metrics import mean_absolute_error
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from django.shortcuts import render, redirect
@@ -157,7 +158,13 @@ def weatherPredict(location):
         weather["target-tempmin"] = weather.shift(-1)["tempmin"]
         weather["target-humidity"] = weather.shift(-1)["humidity"]
         weather = weather.ffill()
+        rolling_horizon = [3, 14]
 
+        for horizon in rolling_horizon:
+            for col in ["tempmax", "tempmin", "humidity"]:
+                weather = compute_rolling(weather, horizon, col)
+
+        weather = weather.iloc[14:,:]
         weather = weather.fillna(0)
         
 
@@ -166,6 +173,13 @@ def weatherPredict(location):
                  'sealevelpressure', 'cloudcover', 'visibility', 'solarradiation', 'solarenergy', 'uvindex', 
                  'severerisk', 'moonphase', 'target', 'target-tempmin', 'target-humidity']
         weather[float_columns] = weather[float_columns].astype(float)
+
+        if np.isinf(weather.values).any():
+            print("DataFrame contains infinite values.")
+            # Print the rows and columns where infinite values occur
+            print(weather[np.isinf(weather).any(axis=1)])
+        else:
+            print("DataFrame does not contain infinite values.")
         
 
         for col in ["tempmax", "tempmin", "precip", "humidity"]:
@@ -481,7 +495,16 @@ def weatherPredict(location):
                                     'diff': np.abs(backtest_result_filtered['actual'] - ensemble_preds)})
 
         # Display the ensemble predictions DataFrame
-        print(ensemble_df3)
+        #print(ensemble_df3)
+
+        print(ensemble_df["diff"].round().value_counts())
+        print(mean_absolute_error(ensemble_df["actual"], ensemble_df["ensemble_prediction"]))
+
+        print(ensemble_df2["diff"].round().value_counts())
+        print(mean_absolute_error(ensemble_df2["actual"], ensemble_df2["ensemble_prediction"]))
+
+        print(ensemble_df3["diff"].round().value_counts())
+        print(mean_absolute_error(ensemble_df3["actual"], ensemble_df3["ensemble_prediction"]))
 
         
 
@@ -544,8 +567,8 @@ def search_location_weather(request):
 
 def compute_rolling(weather, horizon, col):
     label = f"rolling_{horizon}_{col}"
-    weather[label] = weather[col].rolling(horizon).mean()
-    weather[f"{label}_pct"] = weather[label].pct_change()
+    weather[label] = weather[col].rolling(horizon).mean().abs()
+    weather[f"{label}_pct"] = weather[label].pct_change().abs()
     return weather
 
 def expand_mean(df):
