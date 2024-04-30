@@ -1,3 +1,6 @@
+import os
+
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from django.shortcuts import render, redirect
 from io import StringIO
 import pandas as pd
@@ -16,7 +19,7 @@ import numpy as np
 from django.http import Http404
 
 from .models import Prediction
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 CACHE_TIMEOUT = 24 * 60 * 60
@@ -63,7 +66,8 @@ def home(request):
     else:
         # If predictions exist, retrieve them from the database
         predictions = Prediction.objects.filter(datetime__gte=today, datetime__lt=end_date, location=searchLocation).values()
-    context = {'dict': predictions}
+    today = date.today()
+    context = {'dict': predictions, 'today': today}
     return render(request, 'base/home.html', context)
 
 def test(request):
@@ -154,14 +158,15 @@ def weatherPredict(location):
         weather["target-humidity"] = weather.shift(-1)["humidity"]
         weather = weather.ffill()
 
-
         weather = weather.fillna(0)
+        
 
         float_columns = ['tempmax', 'tempmin', 'temp', 'feelslikemax', 'feelslikemin', 'feelslike', 'dew', 'humidity', 
                  'precip', 'precipprob', 'precipcover', 'snow', 'snowdepth', 'windgust', 'windspeed', 'winddir', 
                  'sealevelpressure', 'cloudcover', 'visibility', 'solarradiation', 'solarenergy', 'uvindex', 
-                 'severerisk', 'moonphase', 'target', 'target-tempmin']
+                 'severerisk', 'moonphase', 'target', 'target-tempmin', 'target-humidity']
         weather[float_columns] = weather[float_columns].astype(float)
+        
 
         for col in ["tempmax", "tempmin", "precip", "humidity"]:
             weather[f"month_avg_{col}"] = weather[col].groupby(weather.index.month, group_keys=False).apply(expand_mean)

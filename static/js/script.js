@@ -3,21 +3,19 @@ const forecastDays = document.querySelectorAll(".forecast-day");
 
 // Lặp qua từng ngày và thêm sự kiện khi di chuột vào
 forecastDays.forEach((day) => {
+  console.log(day)
   // Lấy tên ngày và các thông tin cần hiển thị
-  const dayName = day.querySelector(".date").textContent;
   const maxTemp = day.querySelector(".high").textContent;
   const minTemp = day.querySelector(".low").textContent;
-  const description = day.querySelector(".description").textContent;
+  const humidity = day.querySelector(".humidity").textContent;
 
   // Tạo tab chứa thông tin chi tiết
   const detailTab = document.createElement("div");
   detailTab.classList.add("detail-tab");
   detailTab.innerHTML = `
-    <div>Max Temp: ${maxTemp}</div>
-    <div>Min Temp: ${minTemp}</div>
-    <div>Description: ${description}</div>
-    <div>Humidity: 80%</div> <!-- Thay bằng giá trị thực tế nếu có -->
-    <div>Wind Direction: North</div> <!-- Thay bằng giá trị thực tế nếu có -->
+    <div>${maxTemp}</div>
+    <div>${minTemp}</div>
+    <div>${humidity}</div> 
   `;
 
   // Biến để theo dõi xem con trỏ chuột có đang ở trên tab chi tiết hay không
